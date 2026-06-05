@@ -1,22 +1,19 @@
 FROM python:3.11-slim
 
-# System deps for OpenCV, Pillow, psycopg2
+# libgl1-mesa-glx was renamed to libgl1 in Debian Trixie
 RUN apt-get update && apt-get install -y \
-    libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx \
+    libglib2.0-0 libsm6 libxext6 libxrender-dev \
+    libgl1 \
     curl wget git build-essential libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Install Python deps first (layer cache)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright for generic scraper
 RUN playwright install chromium --with-deps 2>/dev/null || true
 
 COPY . .
 
-# Railway injects PORT at runtime
-EXPOSE 8000
 CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
