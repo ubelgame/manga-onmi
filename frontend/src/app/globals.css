@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink-900: #0e0e08;
+  --ink-800: #1a1a12;
+  --ink-700: #28281e;
+  --ink-600: #3a3a2e;
+  --ink-500: #505040;
+  --ink-400: #707060;
+  --ink-200: #c8c8bc;
+  --ink-100: #e8e8e0;
+  --ink-50: #f5f5f0;
+  --accent: #e53e3e;
+  --accent-dark: #c53030;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ink-50);
+  color: var(--ink-900);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* Status badge colours */
+.status-queued     { background: #e8e8e0; color: #505040; }
+.status-scraping   { background: #fef3c7; color: #92400e; }
+.status-ocr        { background: #dbeafe; color: #1e40af; }
+.status-translating{ background: #ede9fe; color: #5b21b6; }
+.status-inpainting { background: #fce7f3; color: #9d174d; }
+.status-typesetting{ background: #d1fae5; color: #065f46; }
+.status-done       { background: #d1fae5; color: #065f46; }
+.status-failed     { background: #fee2e2; color: #991b1b; }
+
+/* Manga-style panel border */
+.manga-panel {
+  border: 2px solid var(--ink-900);
+  box-shadow: 4px 4px 0 var(--ink-900);
+}
+
+.manga-panel-sm {
+  border: 1.5px solid var(--ink-700);
+  box-shadow: 2px 2px 0 var(--ink-700);
+}
+
+/* Speed lines background for header */
+.speed-lines {
+  background-image: repeating-conic-gradient(
+    var(--ink-100) 0deg,
+    var(--ink-100) 2deg,
+    transparent 2deg,
+    transparent 10deg
+  );
+  background-size: 200px 200px;
+  background-position: center;
+}
+
+/* Halftone dot pattern */
+.halftone {
+  background-image: radial-gradient(circle, var(--ink-200) 1px, transparent 1px);
+  background-size: 8px 8px;
+}

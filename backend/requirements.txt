@@ -1,0 +1,52 @@
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+websockets==12.0
+
+# Database
+sqlalchemy[asyncio]==2.0.30
+asyncpg==0.29.0
+alembic==1.13.1
+pgvector==0.3.2
+
+# Queue
+celery==5.4.0
+redis==5.0.7
+flower==2.0.1
+
+# HTTP
+httpx==0.27.0
+aiofiles==23.2.1
+
+# Scraping
+playwright==1.44.0
+beautifulsoup4==4.12.3
+lxml==5.2.2
+
+# Object storage
+boto3==1.34.131
+botocore==1.34.131
+
+# Computer vision
+opencv-python-headless==4.9.0.80
+Pillow==10.3.0
+numpy==1.26.4
+shapely==2.0.4
+
+# OCR
+manga-ocr==0.1.10
+# paddleocr is large; installed separately in worker images if needed
+
+# AI
+anthropic==0.28.0
+
+# Data validation
+pydantic==2.7.3
+pydantic-settings==2.3.1
+
+# Utilities
+python-multipart==0.0.9
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+tenacity==8.3.0
+structlog==24.2.0
