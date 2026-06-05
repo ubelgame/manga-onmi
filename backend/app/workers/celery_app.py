@@ -22,10 +22,9 @@ settings = get_settings()
 log = structlog.get_logger()
 
 # Sync engine for Celery workers (Celery is not async)
-sync_engine = create_engine(
-    settings.database_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://"),
-    pool_pre_ping=True,
-)
+# sync_database_url handles Railway postgres:// → psycopg2-compatible URL
+_sync_url = settings.sync_database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+sync_engine = create_engine(_sync_url, pool_pre_ping=True)
 
 celery_app = Celery(
     "manga_omni",

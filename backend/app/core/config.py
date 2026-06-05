@@ -4,7 +4,28 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # Database
+    # Railway provides DATABASE_URL as postgres:// — we normalise it
     database_url: str = "postgresql+asyncpg://manga:manga_secret@localhost:5432/manga_omni"
+
+    @property
+    def async_database_url(self) -> str:
+        """asyncpg requires postgresql+asyncpg:// scheme."""
+        url = self.database_url
+        if url.startswith("postgres://"):
+            url = "postgresql+asyncpg://" + url[len("postgres://"):]
+        elif url.startswith("postgresql://") and "+asyncpg" not in url:
+            url = "postgresql+asyncpg://" + url[len("postgresql://"):]
+        return url
+
+    @property
+    def sync_database_url(self) -> str:
+        """psycopg2 (used by Celery workers) needs plain postgresql://."""
+        url = self.database_url
+        url = url.replace("postgresql+asyncpg://", "postgresql://")
+        url = url.replace("postgres+asyncpg://", "postgresql://")
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        return url
 
     # Redis
     redis_url: str = "redis://localhost:6379/0"

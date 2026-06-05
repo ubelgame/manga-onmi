@@ -1,0 +1,53 @@
+# railway.toml — root-level monorepo config
+# Railway reads this to know about each service.
+# Each service below maps to a "New Service" you add in the Railway dashboard.
+
+[build]
+# Tells Railway this is a monorepo — don't try to auto-detect at root
+builder = "nixpacks"
+
+# ── Services are configured individually in the Railway dashboard ────────────
+# After pushing this repo, in Railway:
+#
+#  1. DELETE the auto-created failed service
+#  2. Click "+ New Service" → "GitHub Repo" for EACH of the following,
+#     and set the Root Directory as shown:
+#
+#  Service name     | Root Directory  | Dockerfile
+#  -----------------|-----------------|------------------
+#  api              | backend         | Dockerfile
+#  worker           | backend         | Dockerfile.worker
+#  frontend         | frontend        | Dockerfile
+#
+#  3. Add these from Railway's "Add Plugin" button:
+#     - PostgreSQL  (Railway managed)
+#     - Redis       (Railway managed)
+#
+#  4. Set environment variables on the `api` and `worker` services:
+#     ANTHROPIC_API_KEY      = sk-ant-...
+#     DATABASE_URL           = (auto-filled by Railway Postgres plugin)
+#     REDIS_URL              = (auto-filled by Railway Redis plugin)
+#     CELERY_BROKER_URL      = same as REDIS_URL
+#     CELERY_RESULT_BACKEND  = same as REDIS_URL  (append /1)
+#     S3_ENDPOINT            = (see MinIO note below)
+#     S3_ACCESS_KEY          = (see MinIO note below)
+#     S3_SECRET_KEY          = (see MinIO note below)
+#     S3_BUCKET              = manga-pages
+#
+#  5. On `worker` service also set:
+#     QUEUES       = scraper,ocr,translate,typeset
+#     CONCURRENCY  = 2
+#
+#  6. On `frontend` service set:
+#     NEXT_PUBLIC_API_URL = https://<your-api-service>.up.railway.app
+#
+# ── MinIO / Image Storage ─────────────────────────────────────────────────────
+# Railway doesn't host MinIO natively. Two easy options:
+#
+#  Option A (free): Cloudflare R2
+#    - Sign up at cloudflare.com → R2 → Create bucket "manga-pages"
+#    - Set S3_ENDPOINT to your R2 endpoint URL
+#    - Set S3_ACCESS_KEY / S3_SECRET_KEY from R2 API token
+#
+#  Option B (quick test): keep using local MinIO via docker-compose locally,
+#    deploy to Railway only when ready for production.
